@@ -12,6 +12,8 @@ RUN apt-get install -y libicu-dev \
 && docker-php-ext-configure intl \
 && docker-php-ext-install intl
 
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
 # pcov
 RUN pecl install pcov && docker-php-ext-enable pcov
 
