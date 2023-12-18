@@ -33,7 +33,7 @@ services:
     ####################################################################################################
     db:
         container_name: fw_mysql
-        image: mysql:8.1
+        image: mysql
         ports:
             - 3306:3306
         volumes:
