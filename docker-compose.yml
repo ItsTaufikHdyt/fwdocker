@@ -85,3 +85,19 @@ services:
         - "8080:8080"
         depends_on:
         - db
+
+    ####################################################################################################
+    # phpMyAdmin
+    ####################################################################################################
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     ports:
+    #         - 8080:80
+    #     links:
+    #         - db
+    #     environment:
+    #         PMA_HOST: db
+    #         PMA_PORT: 3306
+    #         PMA_ARBITRARY: 1
+    #     volumes:
+    #         - .docker/phpmyadmin/sessions:/sessions
