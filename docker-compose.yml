@@ -91,6 +91,7 @@ services:
     ####################################################################################################
     # phpmyadmin:
     #     image: phpmyadmin/phpmyadmin
+    #     container_name: fw_phpmyadmin
     #     ports:
     #         - 8080:80
     #     links:
