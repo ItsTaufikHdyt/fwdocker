@@ -41,11 +41,8 @@ services:
             - .docker/logs:/var/log/mysql
             - .docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
             - .docker/db/sql:/docker-entrypoint-initdb.d
-        environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: fw_db_name
-            MYSQL_USER: fw_db_user
-            MYSQL_PASSWORD: fw_db_pass
+        env_file:
+            - db.env
     ####################################################################################################
     # Adminer
     ####################################################################################################
