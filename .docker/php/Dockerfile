@@ -50,3 +50,4 @@ RUN git clone https://github.com/seebi/dircolors-solarized
 
 EXPOSE 5173
 WORKDIR /var/www
+RUN chown -R www-data:www-data /var/www
