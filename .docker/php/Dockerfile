@@ -25,6 +25,9 @@ RUN apt-get update \
 
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
+# Instalasi pcntl
+RUN docker-php-ext-install pcntl
+
 # Instalasi pcov
 RUN pecl install pcov && docker-php-ext-enable pcov
 
@@ -51,6 +54,7 @@ WORKDIR /root
 RUN git clone https://github.com/seebi/dircolors-solarized
 
 # Set ownership agar sesuai dengan user www-data
-EXPOSE 5173   
+EXPOSE 5173  
+EXPOSE 8000  
 WORKDIR /var/www
 RUN chown -R www-data:www-data /var/www
