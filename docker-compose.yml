@@ -58,7 +58,7 @@ services:
     # Adminer
     ####################################################################################################
     adminer:
-        image: adminer
+        image: fw_adminer
         container_name: adminer
         ports:
             - "8080:8080"
