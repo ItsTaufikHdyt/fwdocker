@@ -4,12 +4,7 @@ FROM php:8.2-fpm
 ARG UID=1000
 ARG GID=1000
 
-# Tambahkan grup dan user hanya jika belum ada
-RUN getent group www-data || addgroup --gid $GID www-data \
-    && id -u www-data &>/dev/null || adduser --uid $UID --gid $GID --shell /bin/bash --disabled-password --gecos "" www-data
-
-
-# Instalasi package yang diperlukan
+# Update packages and install dependencies
 RUN apt-get update \
   && apt-get install -y build-essential zlib1g-dev default-mysql-client curl gnupg procps vim git unzip libzip-dev libpq-dev \
   && docker-php-ext-install zip pdo_mysql pdo_pgsql pgsql
@@ -53,8 +48,22 @@ RUN composer global require "laravel/installer"
 WORKDIR /root
 RUN git clone https://github.com/seebi/dircolors-solarized
 
-# Set ownership agar sesuai dengan user www-data
-EXPOSE 5173  
-EXPOSE 8000  
+# Create a non-root user with specified UID/GID if it doesn't match www-data
+RUN if [ ${UID} != 33 ] || [ ${GID} != 33 ]; then \
+    groupadd -g ${GID} appuser && \
+    useradd -u ${UID} -g ${GID} -m -s /bin/bash appuser && \
+    mkdir -p /home/appuser/.composer && \
+    chown -R ${UID}:${GID} /home/appuser /composer; \
+fi
+
+# Expose ports
+EXPOSE 5173
+EXPOSE 8000   
+
+# Set working directory and permissions
 WORKDIR /var/www
-RUN chown -R www-data:www-data /var/www
+# This ensures any existing files get proper ownership
+RUN chown -R ${UID}:${GID} /var/www
+
+# Switch to the correct user for subsequent operations
+USER ${UID}:${GID}

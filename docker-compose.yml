@@ -7,18 +7,18 @@ services:
     ####################################################################################################
     php:
         container_name: fw_php
-        build: .docker/php
+        build: 
+            context: .docker/php
+            args:
+                UID: ${UID:-1000}
+                GID: ${GID:-1000}
         ports:
             - 5173:5173
             - 8001:8000
         volumes:
             - .:/var/www:cached
-        environment:
-            - UID=${UID:-1000}
-            - GID=${GID:-1000}
-        user: "${UID}:${GID}"
         networks:
-            - my_network
+            - obito_network
 
     ####################################################################################################
     # Nginx
