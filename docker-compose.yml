@@ -3,9 +3,9 @@ version: '3'
 services:
 
     ####################################################################################################
-    # PHP
+    # app
     ####################################################################################################
-    php:
+    app:
         container_name: fw_php
         build: 
             context: .docker/php
@@ -33,7 +33,7 @@ services:
             - .docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
             - .docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         depends_on:
-            - php
+            - app
         networks:
             - my_network
 
