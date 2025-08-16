@@ -1,0 +1,31 @@
+
+{
+	# Matikan auto-HTTPS lokal (opsional), logging, dll bisa ditaruh di sini
+	email {$ACME_EMAIL}
+	# acme_ca https://acme-staging-v02.api.letsencrypt.org/directory  # gunakan ini untuk testing (hapus saat production)
+}
+
+# Redirect www -> non-www
+www.{$PRIMARY_DOMAIN} {
+	redir https://{$PRIMARY_DOMAIN}{uri} 308
+}
+
+# Situs utama dengan TLS otomatis
+{$PRIMARY_DOMAIN} {
+	# Proxy ke Nginx container di jaringan docker
+	reverse_proxy wrongshock_nginx:80
+
+	# Kompresi & header security dasar
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Frame-Options "SAMEORIGIN"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Cross-Origin-Resource-Policy "same-site"
+	}
+
+	# Health check (opsional)
+	@health path /healthz
+	respond @health 200
+}
